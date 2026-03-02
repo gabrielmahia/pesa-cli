@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pesa-cli"
+version = "1.0.0"
+description = "Command-line tool for M-Pesa Daraja v3 — STK Push, B2C, balance, config management."
+readme = "README.md"
+license = {text = "CC-BY-NC-ND-4.0"}
+authors = [{name = "Gabriel Mahia", email = "contact@aikungfu.dev"}]
+keywords = ["mpesa", "safaricom", "daraja", "cli", "kenya", "fintech", "python", "typer"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "typer>=0.12",
+    "rich>=13",
+]
+
+[project.scripts]
+pesa = "pesa_cli.cli:app"
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "ruff"]
+
+[project.urls]
+Homepage = "https://github.com/gabrielmahia/pesa-cli"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--tb=short -q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]
+ignore = ["E501"]

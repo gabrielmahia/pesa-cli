@@ -1,2 +1,2 @@
-"""pesa-cli — M-Pesa Daraja v3 command-line tool."""
-__version__ = "1.0.0"
+from .main import app, main
+__all__ = ["app", "main"]

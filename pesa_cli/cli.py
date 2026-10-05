@@ -26,9 +26,7 @@ from __future__ import annotations
 
 import json
 import os
-import sys
 import time
-import hashlib
 import base64
 import urllib.request
 import urllib.error
@@ -42,7 +40,6 @@ from rich import print as rprint
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
-from rich.text import Text
 
 app = typer.Typer(
     name="pesa",
@@ -107,6 +104,10 @@ def require_credential(key: str, label: str) -> str:
 # ── Daraja HTTP layer ──────────────────────────────────────────────────────────
 
 def _base_url() -> str:
+    # Documented in the README ("Use with daraja-mock"): point the CLI at a local test server instead of Safaricom.
+    override = os.environ.get("PESA_BASE_URL")
+    if override:
+        return override.rstrip("/")
     env = get_credential("environment") or "sandbox"
     if env == "production":
         return "https://api.safaricom.co.ke"
@@ -186,8 +187,7 @@ def config_show():
         display = ("*" * 8 + val[-4:] if val and is_secret and len(val) > 4 else val or "—")
         table.add_row(key, source, display)
     console.print(table)
-    rprint(f"
-[dim]Config file: {_config_path()}[/dim]")
+    rprint(f"\n[dim]Config file: {_config_path()}[/dim]")
 
 
 @config_app.command("set")
@@ -219,12 +219,9 @@ def auth():
             raise typer.Exit(1)
     env = get_credential("environment") or "sandbox"
     rprint(Panel(
-        f"[green]✓ Authenticated[/green]
-"
-        f"Environment: [cyan]{env}[/cyan]
-"
-        f"Token: [dim]{token[:12]}...{token[-4:]}[/dim]
-"
+        f"[green]✓ Authenticated[/green]\n"
+        f"Environment: [cyan]{env}[/cyan]\n"
+        f"Token: [dim]{token[:12]}...{token[-4:]}[/dim]\n"
         f"Expires in: [cyan]~60 minutes[/cyan]",
         title="pesa auth", border_style="green",
     ))
@@ -272,26 +269,18 @@ def stk_push(
     if response.get("ResponseCode") == "0":
         checkout_id = response.get("CheckoutRequestID", "")
         rprint(Panel(
-            f"[green]✓ STK Push sent[/green]
-"
-            f"Phone:       [cyan]+{phone}[/cyan]
-"
-            f"Amount:      [cyan]KES {amount:,}[/cyan]
-"
-            f"Reference:   [cyan]{ref}[/cyan]
-"
-            f"Checkout ID: [dim]{checkout_id}[/dim]
-
-"
-            f"[dim]The customer will receive a PIN prompt on their phone.[/dim]
-"
+            f"[green]✓ STK Push sent[/green]\n"
+            f"Phone:       [cyan]+{phone}[/cyan]\n"
+            f"Amount:      [cyan]KES {amount:,}[/cyan]\n"
+            f"Reference:   [cyan]{ref}[/cyan]\n"
+            f"Checkout ID: [dim]{checkout_id}[/dim]\n\n"
+            f"[dim]The customer will receive a PIN prompt on their phone.[/dim]\n"
             f"[dim]Run: pesa stk query {checkout_id}[/dim]",
             title="STK Push", border_style="green",
         ))
     else:
         rprint(Panel(
-            f"[red]✗ Request rejected[/red]
-{json.dumps(response, indent=2)}",
+            f"[red]✗ Request rejected[/red]\n{json.dumps(response, indent=2)}",
             title="STK Push", border_style="red",
         ))
         raise typer.Exit(1)
@@ -329,10 +318,8 @@ def stk_query(
     color = STATUS_COLORS.get(str(result_code), "red")
     symbol = "✓" if str(result_code) == "0" else "✗"
     rprint(Panel(
-        f"[{color}]{symbol} {result_desc}[/{color}]
-"
-        f"Result Code: [cyan]{result_code}[/cyan]
-"
+        f"[{color}]{symbol} {result_desc}[/{color}]\n"
+        f"Result Code: [cyan]{result_code}[/cyan]\n"
         f"Checkout ID: [dim]{checkout_id}[/dim]",
         title="STK Query", border_style=color,
     ))
@@ -377,22 +364,16 @@ def b2c(
 
     if response.get("ResponseCode") == "0":
         rprint(Panel(
-            f"[green]✓ B2C request accepted[/green]
-"
-            f"Phone:           [cyan]+{phone}[/cyan]
-"
-            f"Amount:          [cyan]KES {amount:,}[/cyan]
-"
-            f"Conversation ID: [dim]{response.get('ConversationID', '')}[/dim]
-
-"
+            f"[green]✓ B2C request accepted[/green]\n"
+            f"Phone:           [cyan]+{phone}[/cyan]\n"
+            f"Amount:          [cyan]KES {amount:,}[/cyan]\n"
+            f"Conversation ID: [dim]{response.get('ConversationID', '')}[/dim]\n\n"
             f"[dim]Result will be posted to your ResultURL.[/dim]",
             title="B2C", border_style="green",
         ))
     else:
         rprint(Panel(
-            f"[red]✗ B2C rejected[/red]
-{json.dumps(response, indent=2)}",
+            f"[red]✗ B2C rejected[/red]\n{json.dumps(response, indent=2)}",
             title="B2C", border_style="red",
         ))
         raise typer.Exit(1)
@@ -428,20 +409,15 @@ def balance():
 
     if response.get("ResponseCode") == "0":
         rprint(Panel(
-            f"[green]✓ Balance request accepted[/green]
-"
-            f"Shortcode:       [cyan]{shortcode}[/cyan]
-"
-            f"Conversation ID: [dim]{response.get('ConversationID', '')}[/dim]
-
-"
+            f"[green]✓ Balance request accepted[/green]\n"
+            f"Shortcode:       [cyan]{shortcode}[/cyan]\n"
+            f"Conversation ID: [dim]{response.get('ConversationID', '')}[/dim]\n\n"
             f"[dim]Balance will be posted to your ResultURL asynchronously.[/dim]",
             title="Account Balance", border_style="green",
         ))
     else:
         rprint(Panel(
-            f"[red]✗ Request rejected[/red]
-{json.dumps(response, indent=2)}",
+            f"[red]✗ Request rejected[/red]\n{json.dumps(response, indent=2)}",
             title="Account Balance", border_style="red",
         ))
         raise typer.Exit(1)

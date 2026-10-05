@@ -18,6 +18,6 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
-      - run: pip install typer rich pytest ruff
+      - run: pip install -e ".[dev]"
       - run: ruff check pesa_cli/ tests/ --ignore E501
-      - run: pytest -q --tb=short
+      - run: python -m pytest -q --tb=short

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pesa-cli"
-version = "1.0.0"
+version = "1.0.1"
 description = "Command-line tool for M-Pesa Daraja v3 — STK Push, B2C, balance, config management."
 readme = "README.md"
 license = {text = "CC-BY-NC-ND-4.0"}
@@ -30,7 +30,7 @@ dependencies = [
 pesa = "pesa_cli.cli:app"
 
 [project.optional-dependencies]
-dev = ["pytest>=7", "ruff"]
+dev = ["pytest>=7", "ruff", "daraja-mock>=1.0.0"]
 
 [project.urls]
 Homepage = "https://github.com/gabrielmahia/pesa-cli"

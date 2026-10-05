@@ -1,6 +1,5 @@
 """Tests for pesa-cli — config and normalize logic without live calls."""
 import os
-import pytest
 from typer.testing import CliRunner
 from pesa_cli import app
 from pesa_cli.main import _normalize

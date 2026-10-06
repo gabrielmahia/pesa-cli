@@ -156,3 +156,7 @@ if scripting against pesa-cli output is needed.
 
 *Part of the [nairobi-stack](https://github.com/gabrielmahia/nairobi-stack) East Africa engineering ecosystem.*
 *Maintained by [Gabriel Mahia](https://github.com/gabrielmahia). Kenya × USA.*
+
+## Getting sandbox credentials
+
+New to Daraja, or on a new machine? Follow [the sandbox setup guide](https://github.com/gabrielmahia/mpesa-python/blob/main/docs/SANDBOX_SETUP.md): it creates a free sandbox app and runs OAuth, an STK Push and a status query, with exact portal labels. Set `DARAJA_CALLBACK_URL` to a public HTTPS address you can watch (for example a webhook.site URL); without it the CLI uses a placeholder and tells you so.

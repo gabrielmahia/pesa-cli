@@ -112,3 +112,17 @@ def test_invalid_phone_is_rejected():
 
     with pytest.raises(typer.Exit):
         importlib.import_module("pesa_cli.cli")._normalise_phone("12345")
+
+
+def test_a_missing_callback_url_is_announced_not_silent(mock, env):
+    """Without DARAJA_CALLBACK_URL the CLI substitutes https://example.com/mpesa/callback, so the user never sees the result and had no hint why."""
+    r = runner.invoke(_app(), ["stk", "push", "0712345678", "10", "--ref", "NOCB"], env=env)
+    assert r.exit_code == 0 and "No callback URL" in r.output
+    body = _posts(mock, "/mpesa/stkpush/v1/processrequest")[-1]["body"]
+    assert body["CallBackURL"] == "https://example.com/mpesa/callback"
+
+
+def test_a_configured_callback_url_is_used_and_not_warned_about(mock, env):
+    r = runner.invoke(_app(), ["stk", "push", "0712345678", "10", "--ref", "WITHCB"], env={**env, "DARAJA_CALLBACK_URL": "https://webhook.site/abc"})
+    assert r.exit_code == 0 and "No callback URL" not in r.output
+    assert _posts(mock, "/mpesa/stkpush/v1/processrequest")[-1]["body"]["CallBackURL"] == "https://webhook.site/abc"

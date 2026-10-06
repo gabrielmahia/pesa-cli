@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pesa-cli"
-version = "1.0.1"
+version = "1.0.2"
 description = "Command-line tool for M-Pesa Daraja v3 — STK Push, B2C, balance, config management."
 readme = "README.md"
 license = {text = "CC-BY-NC-ND-4.0"}

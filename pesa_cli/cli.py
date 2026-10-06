@@ -240,7 +240,8 @@ def stk_push(
     consumer_secret = require_credential("consumer_secret", "Consumer Secret")
     shortcode       = require_credential("shortcode",       "Shortcode")
     passkey         = require_credential("passkey",         "Passkey")
-    callback_url    = get_credential("callback_url") or "https://example.com/mpesa/callback"
+    callback_given  = get_credential("callback_url")
+    callback_url    = callback_given or "https://example.com/mpesa/callback"
     ref = ref[:12]  # Daraja hard limit
 
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -268,6 +269,11 @@ def stk_push(
 
     if response.get("ResponseCode") == "0":
         checkout_id = response.get("CheckoutRequestID", "")
+        # Without a callback URL Safaricom posts the result to a placeholder you cannot see; say so instead of failing silently.
+        notice = "" if callback_given else (
+            "\n\n[yellow]No callback URL set (DARAJA_CALLBACK_URL). Safaricom will post the result to "
+            f"{callback_url}, which you cannot see. Use 'pesa stk query' to check the outcome.[/yellow]"
+        )
         rprint(Panel(
             f"[green]✓ STK Push sent[/green]\n"
             f"Phone:       [cyan]+{phone}[/cyan]\n"
@@ -275,7 +281,7 @@ def stk_push(
             f"Reference:   [cyan]{ref}[/cyan]\n"
             f"Checkout ID: [dim]{checkout_id}[/dim]\n\n"
             f"[dim]The customer will receive a PIN prompt on their phone.[/dim]\n"
-            f"[dim]Run: pesa stk query {checkout_id}[/dim]",
+            f"[dim]Run: pesa stk query {checkout_id}[/dim]{notice}",
             title="STK Push", border_style="green",
         ))
     else:

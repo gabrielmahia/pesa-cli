@@ -1,13 +1,13 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "pesa-cli"
-version = "1.0.2"
+version = "1.0.3"
 description = "Command-line tool for M-Pesa Daraja v3 — STK Push, B2C, balance, config management."
 readme = "README.md"
-license = {text = "CC-BY-NC-ND-4.0"}
+license = "CC-BY-NC-ND-4.0"
 authors = [{name = "Gabriel Mahia", email = "contact@aikungfu.dev"}]
 keywords = ["mpesa", "safaricom", "daraja", "cli", "kenya", "fintech", "python", "typer"]
 classifiers = [
@@ -18,6 +18,9 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
 ]
 requires-python = ">=3.10"
 dependencies = [
@@ -25,6 +28,7 @@ dependencies = [
     "requests>=2.28",
     "rich>=13",
 ]
+license-files = ["LICENSE"]
 
 [project.scripts]
 pesa = "pesa_cli.cli:app"

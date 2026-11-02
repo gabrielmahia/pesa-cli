@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pesa-cli"
-version = "1.0.3"
+version = "1.0.4"
 description = "Command-line tool for M-Pesa Daraja v3 — STK Push, B2C, balance, config management."
 readme = "README.md"
 license = "CC-BY-NC-ND-4.0"
@@ -15,14 +15,13 @@ classifiers = [
     "Environment :: Console",
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: 3.15",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "typer>=0.12",
     "requests>=2.28",
@@ -45,7 +44,7 @@ addopts = "--tb=short -q"
 
 [tool.ruff]
 line-length = 100
-target-version = "py310"
+target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "W"]

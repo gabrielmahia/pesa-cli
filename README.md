@@ -5,7 +5,7 @@
 [![CI](https://github.com/gabrielmahia/pesa-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/gabrielmahia/pesa-cli/actions)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](#)
 [![Tests](https://img.shields.io/badge/tests-34%20passing-brightgreen)](#)
-[![License](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Test integrations, trigger payments, and check balances from your terminal —
 without opening the Safaricom portal or writing a script.

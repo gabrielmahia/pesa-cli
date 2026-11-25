@@ -3,7 +3,7 @@ message: "If you use this software, please cite it as below."
 type: software
 title: "pesa-cli"
 abstract: "Command-line tool for M-Pesa Daraja v3 — STK Push, B2C, balance, config management."
-version: "1.0.5"
+version: "1.0.6"
 authors:
   - family-names: "Mahia"
     given-names: "Gabriel"
